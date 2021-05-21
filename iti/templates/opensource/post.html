@@ -40,8 +40,32 @@
     >
   </div>
 </article>
+
+<div id="like-post">
+  <form action="{% url 'like_post' post.pk %}" method="POST">
+    {% csrf_token %} {% if isLiked %}
+    <button
+      type="submit"
+      class="btn btn-danger btn-sm"
+      name="post_id"
+      value="{{post.id}}"
+    >
+      Unlike ({{post.total_likes}})
+    </button>
+    {% else %}
+    <button
+      type="submit"
+      class="btn btn-primary btn-sm"
+      name="post_id"
+      value="{{post.id}}"
+    >
+      Like ({{post.total_likes}})
+    </button>
+    {% endif %}
+  </form>
+</div>
 <!-- Comments section-->
-<section id="commects" class="mb-5">
+<section id="commects" class="my-5">
   <div class="card bg-light">
     <div class="card-body">
       <!-- Single comment-->

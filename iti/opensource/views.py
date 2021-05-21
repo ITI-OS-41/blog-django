@@ -1,6 +1,7 @@
 from opensource.forms import CommentForm
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse,HttpResponseRedirect
+from django.urls import reverse
 from opensource.models import Post, Category
 
 
@@ -8,8 +9,10 @@ from opensource.models import Post, Category
 
 # Create your views here.
 
-def getPost(request, postId): 
-    post = Post.objects.get(id=postId)
+def getPost(request, pk): 
+    post = Post.objects.get(id=pk)
+    
+    # ! START:  Check comment form request 
     commentForm = CommentForm()
     if request.method == 'POST':
         commentForm = CommentForm(request.POST)
@@ -18,8 +21,16 @@ def getPost(request, postId):
 
         if commentForm.is_valid():
             commentForm.save()
-            return HttpResponseRedirect('/post/'+postId)
-    context = {'commentForm': commentForm,'post': post}
+            return HttpResponseRedirect('/post/'+str(pk))
+    # ! END: Check comment form request 
+
+    # ! START: Like
+    isLiked = post.likes.filter(id=request.user.id).exists()
+    # ! END: Like 
+    
+
+
+    context = {'commentForm': commentForm,'post': post, 'isLiked': isLiked}
 
     return render(request, 'opensource/post.html', context)
 
@@ -58,3 +69,13 @@ def deletePost(request, postId):
     post.delete()
     return HttpResponseRedirect('/opensource/all')
     
+def likePost(request, pk): 
+    post = get_object_or_404(Post,id=request.POST.get('post_id'))
+
+    isLiked = post.likes.filter(id=request.user.id).exists()
+    if isLiked:
+        post.likes.remove(request.user)
+    else:
+        post.likes.add(request.user)
+    
+    return HttpResponseRedirect(reverse('post',args=[str(pk)]))

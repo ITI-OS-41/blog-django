@@ -49,6 +49,8 @@ class Post(models.Model):
 
     likes = models.ManyToManyField(User,related_name='posts')
 
+    def total_likes(self):
+        return self.likes.count()
 
     def save(self, *args, **kwargs):
         if len(self.slug) == 0:
