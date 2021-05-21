@@ -2,10 +2,9 @@ from django.urls import path
 from opensource import views
 
 urlpatterns = [
-    path('', views.getAllStudents),
-    path('home/', views.home),
-    path('student/<studentId>', views.getStudent),
-    path('new/', views.newStudent),
-    path('edit/<studentId>', views.editStudent),
-    path('delete/<studentId>', views.deleteStudent),
+    path('', views.getAllPosts),
+    path('post/<postId>', views.getPost),
+    path('create/', views.newPost),
+    path('edit/<postId>', views.editPost),
+    path('delete/<postId>', views.deletePost),
 ]   

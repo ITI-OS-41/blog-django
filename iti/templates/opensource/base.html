@@ -41,14 +41,6 @@
         </div>
       </div>
     </nav>
-    <!-- Page header with logo and tagline-->
-    <header class="py-5 bg-light border-bottom mb-4">
-      <div class="container">
-        <div class="text-center my-5">
-          <h1 class="fw-bolder">{% block title_block %} {% endblock %}</h1>
-        </div>
-      </div>
-    </header>
 
     <!-- Page content-->
     <div class="container">
@@ -56,12 +48,12 @@
         <!-- Blog entries-->
         <div class="col-lg-8">
           <!-- Page content-->
-          <main id="content" class="container">
+          <main id="content" class="container py-4">
             {% block content %} {% endblock %}
           </main>
         </div>
         <!-- Side widgets-->
-        <div class="col-lg-4">
+        <div class="col-lg-4 py-4">
           <!-- Search widget-->
           <div class="card mb-4">
             <div class="card-header">Search</div>

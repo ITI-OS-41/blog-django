@@ -1,26 +1,27 @@
 from django import forms
 from django.forms import widgets
-from opensource.models import Student, Track
+from opensource.models import Post, Category
 
-class StudentForm(forms.ModelForm):
+class PostForm(forms.ModelForm):
     class Meta:
-        model = Student
-        fields = ( 'fname', 'lname', 'age', 'student_track' )
-        # fields = '__all__'
-        widgets = {
-            'fname': forms.TextInput(attrs={'class': 'form-control'}),
-            'lname': forms.TextInput(attrs={'class': 'form-control'}),
-            'age': forms.TextInput(attrs={'class': 'form-control'})
-        }
+        model = Post
         
-class TrackForm(forms.ModelForm):
+        fields = ( 'title', 'content', 'category', )
+        # # fields = '__all__'
+        # widgets = {
+        #     'fname': forms.TextInput(attrs={'class': 'form-control'}),
+        #     'lname': forms.TextInput(attrs={'class': 'form-control'}),
+        #     'age': forms.TextInput(attrs={'class': 'form-control'})
+        # }
+        
+class CategoryForm(forms.ModelForm):
     class Meta:
-        model = Track
-        fields = ('name',)
+        model = Category
+        fields = ('title',)
 
         # fields = '__all__'
 
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'title': forms.TextInput(attrs={'class': 'form-control'}),
         }
           

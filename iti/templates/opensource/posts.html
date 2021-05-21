@@ -1,5 +1,13 @@
-{% extends 'opensource/base.html' %} {% block title_block %} This is all
-students template {% endblock %} {% block content %}
+{% extends 'opensource/base.html' %} {% block content %}
+
+<!-- Page header with logo and tagline-->
+<header class="card bg-light border-bottom mb-4">
+  <div class="card-body text-center my-2">
+    <h2 class="fw-bolder text-primary">
+      {% block title_block %} Blogs {% endblock %}
+    </h2>
+  </div>
+</header>
 
 <!-- Nested row for non-featured blog posts-->
 <div class="row">

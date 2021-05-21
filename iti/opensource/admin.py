@@ -1,28 +1,25 @@
 from django.contrib import admin
-from .models import Student, Track
+from .models import Post, Category
 
 
-
-class CustomStudent(admin.ModelAdmin):
+class CustomPost(admin.ModelAdmin):
     fieldsets = (
-        ['Student Information', {'fields': ['fname','lname','age']}],
-        ['Track Information', {'fields': ['student_track']}]
+        ['Post Information', {'fields': ['title','author','status']}],
+        ['Category Information', {'fields': ['category']}]
     )
-    list_display = ('fname', 'lname', 'age', 'student_track', 'is_graduated')
-    list_filter = ['student_track', 'fname']
-    search_fields = ['fname', 'student_track__name']
+    list_display = ('title', 'category', 'author', 'is_published')
+    list_filter = ['category', 'title']
+    search_fields = ['title', 'Category__title']
 
-class InlineStudent(admin.StackedInline):
-    model = Student
+class InlinePost(admin.StackedInline):
+    model = Post
     extra = 1
 
-class CustomTrack(admin.ModelAdmin):
-    inlines = [InlineStudent]
+class CustomCategory(admin.ModelAdmin):
+    inlines = [InlinePost]
 
 
 
-
-
-admin.site.register(Student, CustomStudent)
-admin.site.register(Track, CustomTrack)
+admin.site.register(Post, CustomPost)
+admin.site.register(Category, CustomCategory)
 

@@ -1,50 +1,47 @@
-from opensource.forms import StudentForm
+from opensource.forms import PostForm
 from django.shortcuts import render
 from django.http import HttpResponse,HttpResponseRedirect
-from opensource.models import Student, Track
+from opensource.models import Post, Category
 
 # Create your views here.
 
-def home(request): 
-    return HttpResponse("<h1>This is home page</h1>")
+def getPost(request, postId): 
+    post = Post.objects.get(id=postId)
+    context = {'post': post}
+    return render(request, 'opensource/post.html', context)
 
-def getStudent(request, studentId): 
-    student = Student.objects.get(id=studentId)
-    context = {'student': student}
-    return render(request, 'opensource/student.html', context)
-
-def getAllStudents(request): 
-    students = Student.objects.all()
-    context = {'students': students}
-    return render(request, 'opensource/students.html', context)
+def getAllPosts(request): 
+    posts = Post.objects.all()
+    context = {'posts': posts}
+    return render(request, 'opensource/posts.html', context)
 
 
-def newStudent(request): 
-    studentForm = StudentForm()
+def newPost(request): 
+    postForm = PostForm()
     if request.method == 'POST':
-        studentForm = StudentForm(request.POST)
-        if studentForm.is_valid():
-            studentForm.save()
+        postForm = PostForm(request.POST)
+        if postForm.is_valid():
+            postForm.save()
             return HttpResponseRedirect('/opensource/all')
-    context = {'studentForm': studentForm}
-    return render(request, 'opensource/newStudent.html', context)
+    context = {'postForm': postForm}
+    return render(request, 'opensource/newPost.html', context)
 
 
 
-def editStudent(request, studentId): 
-    student = Student.objects.get(id = studentId)
-    studentForm = StudentForm(instance = student)
+def editPost(request, postId): 
+    post = Post.objects.get(id = postId)
+    postForm = PostForm(instance = post)
 
     if( request.method == 'POST'):
-        studentForm = StudentForm(request.POST, instance=student)
-        if studentForm.is_valid():
-            studentForm.save()
+        postForm = PostForm(request.POST, instance=post)
+        if postForm.is_valid():
+            postForm.save()
              
-    context = {'studentForm': studentForm}
-    return render(request, 'opensource/newStudent.html', context)
+    context = {'postForm': postForm}
+    return render(request, 'opensource/newPost.html', context)
 
-def deleteStudent(request, studentId): 
-    student = Student.objects.get(id = studentId)
-    student.delete()
+def deletePost(request, postId): 
+    post = Post.objects.get(id = postId)
+    post.delete()
     return HttpResponseRedirect('/opensource/all')
     

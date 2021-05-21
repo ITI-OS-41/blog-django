@@ -84,11 +84,11 @@ DATABASES = {
     'default': {
     'ENGINE': 'django.db.backends.mysql',
     'NAME': 'iti-django',  
-        'HOST': 'localhost',
-        'PORT': '3306',
-        'USER': 'root',
-            'PASSWORD': '',
-        }   
+    'HOST': 'localhost',
+    'PORT': '3306',
+    'USER': 'root',
+    'PASSWORD': '',
+    }   
 }
 
 
@@ -129,7 +129,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = os.path.join(BASE_DIR, '/opensource/static/')
+STATIC_URL = os.path.join(BASE_DIR, '/static/')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
