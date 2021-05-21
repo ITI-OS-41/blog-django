@@ -3,6 +3,9 @@ from django.shortcuts import render
 from django.http import HttpResponse,HttpResponseRedirect
 from opensource.models import Post, Category
 
+
+
+
 # Create your views here.
 
 def getPost(request, postId): 
