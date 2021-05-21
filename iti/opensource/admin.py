@@ -13,7 +13,7 @@ def custom_titled_filter(title):
 
 class CustomPost(admin.ModelAdmin):
     fieldsets = (
-        ['Post Information', {'fields': ['title','slug','author','content','status']}],
+        ['Post Information', {'fields': ['image','title','slug','author','content','status']}],
         ['Category Information', {'fields': ['category']}]
     )
     list_display = ('title', 'category', 'author', 'is_published')

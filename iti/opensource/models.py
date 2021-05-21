@@ -1,9 +1,22 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.utils.text import slugify
+from django.utils.text import slugify 
+import re
+import os
+
+from urllib.parse import urlparse
+
 
 from ckeditor.fields import RichTextField
 
+
+def cleanhtml(raw_html):
+    cleanr = re.compile('<.*?>')
+    cleantext = re.sub(cleanr, '', raw_html)
+    return cleantext
+
+def sub_string(str,len):
+    return str[0:len]
 
 class Category(models.Model):
     title = models.CharField(max_length=50, unique=True)
@@ -20,6 +33,8 @@ STATUS = (
 
 
 class Post(models.Model):
+    image = models.ImageField(upload_to='iti/opensource/static/img', default='img/default.jpg')
+
     title = models.CharField(max_length=200, unique=True)
     slug = models.SlugField(max_length=200, unique=True, blank=True)
     # content =  models.CharField(max_length=1000)
@@ -33,10 +48,12 @@ class Post(models.Model):
     status = models.IntegerField(choices=STATUS, default=0)
 
     def save(self, *args, **kwargs):
-        if self.slug == None or not self.slug or self.slug == '':
+        if len(self.slug) == 0:
             self.slug = slugify(self.title)
-            super(Post, self).save(*args, **kwargs)
-
+        else :
+            self.slug = slugify(self.slug)
+        super(Post, self).save(*args, **kwargs)
+        
 
     class Meta:
         ordering = ['-created_on'] 
@@ -47,3 +64,11 @@ class Post(models.Model):
     def is_published(self):
         return self.status == True
     is_published.boolean = True
+
+    @property
+    def brief_content(self):
+        return sub_string(cleanhtml(self.content),20)+'...'
+
+    def get_image(self):
+        imgName = self.image.name.split('/')
+        return 'img/'+imgName[-1]
