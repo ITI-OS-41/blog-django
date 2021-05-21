@@ -11,11 +11,8 @@
       Posted on {{post.created_on}} by {{post.author}}
     </div>
     <!-- Post categories-->
-    <a class="badge bg-secondary text-decoration-none link-light" href="#!"
-      >Web Design</a
-    >
-    <a class="badge bg-secondary text-decoration-none link-light" href="#!"
-      >Freebies</a
+    <a class="badge bg-info text-decoration-none" href="#!"
+      >{{post.category}}</a
     >
   </header>
   <!-- Preview image figure-->
@@ -28,6 +25,20 @@
   </figure>
   <!-- Post content-->
   <section class="mb-5">{{post.content | safe}}</section>
+
+  <!-- Post tags-->
+  <div class="my-4">
+    Tags:
+    <a class="badge bg-secondary text-decoration-none" href="#!"
+      >{{post.category}}</a
+    >
+    <a class="badge bg-secondary text-decoration-none" href="#!"
+      >{{post.category}}</a
+    >
+    <a class="badge bg-secondary text-decoration-none" href="#!"
+      >{{post.category}}</a
+    >
+  </div>
 </article>
 <!-- Comments section-->
 <section class="mb-5">
