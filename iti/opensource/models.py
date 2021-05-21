@@ -47,13 +47,15 @@ class Post(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     status = models.IntegerField(choices=STATUS, default=0)
 
+    likes = models.ManyToManyField(User,related_name='posts')
+
+
     def save(self, *args, **kwargs):
         if len(self.slug) == 0:
             self.slug = slugify(self.title)
         else :
             self.slug = slugify(self.slug)
         super(Post, self).save(*args, **kwargs)
-        
 
     class Meta:
         ordering = ['-created_on'] 
