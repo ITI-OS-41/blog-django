@@ -1,4 +1,4 @@
-from opensource.forms import PostForm
+from opensource.forms import CommentForm
 from django.shortcuts import render
 from django.http import HttpResponse,HttpResponseRedirect
 from opensource.models import Post, Category
@@ -10,7 +10,17 @@ from opensource.models import Post, Category
 
 def getPost(request, postId): 
     post = Post.objects.get(id=postId)
-    context = {'post': post}
+    commentForm = CommentForm()
+    if request.method == 'POST':
+        commentForm = CommentForm(request.POST)
+        commentForm.instance.name = request.user
+        commentForm.instance.post = post
+
+        if commentForm.is_valid():
+            commentForm.save()
+            return HttpResponseRedirect('/post/'+postId)
+    context = {'commentForm': commentForm,'post': post}
+
     return render(request, 'opensource/post.html', context)
 
 def getAllPosts(request): 

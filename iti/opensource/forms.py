@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import widgets
-from opensource.models import Post, Category
+from opensource.models import Post, Category, Comment
 
 class PostForm(forms.ModelForm):
     class Meta:
@@ -25,3 +25,19 @@ class CategoryForm(forms.ModelForm):
             'title': forms.TextInput(attrs={'class': 'form-control'}),
         }
           
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ('body',)
+
+        widgets = {
+            'body': forms.Textarea(
+                attrs={
+                    'class': 'form-control',
+                    'required': 'required',
+                    'rows': '2',
+                    'placeholder': 'Join the discussion and leave a comment!',
+                    },
+                ),
+        }
+    

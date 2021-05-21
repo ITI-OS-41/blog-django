@@ -46,7 +46,7 @@
     <div class="card-body">
       <!-- Single comment-->
       {% if not post.comments.all %}
-      <h4 class="text-muted">Not Comments yet</h4>
+      <h4 class="text-muted text-center">Not Comments yet</h4>
       {% else %} {% for comment in post.comments.all %}
 
       <div class="single-comment d-flex border p-2 bg-white mb-2">
@@ -59,17 +59,11 @@
       </div>
       {% endfor%} {% endif%}
 
-      <h4 class="mt-4">Add a Comment</h4>
+      <h5 class="mt-4">Add a Comment</h5>
       <!-- Comment form-->
-      <form class="mb-4">
-        <div class="input-group mb-2">
-          <textarea
-            required
-            class="form-control"
-            rows="2"
-            placeholder="Join the discussion and leave a comment!"
-          ></textarea>
-        </div>
+      <form method="POST" id="add-comment" class="mb-4">
+        {% csrf_token %}
+        <div class="input-group mb-2">{{commentForm}}</div>
         <div class="d-flex justify-content-end">
           <button type="submit" class="btn btn-primary">Submit</button>
         </div>
@@ -77,12 +71,4 @@
     </div>
   </div>
 </section>
-<!--                     
-<a href="/opensource/all">
-  <img src="{% static 'img/avatar.png' %}" width="100" height="100"  />
-</a>
-<h4>Name: {{student.fname}} {{student.lname}}</h4>
-<h4>Age: {{student.age}}</h4>
-<h4>Track: {{student.student_track}}</h4> -->
-
 {% endblock %}

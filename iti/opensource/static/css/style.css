@@ -1,0 +1,4 @@
+/* Hide text area label in new comment area */
+form#add-comment label {
+  display: none;
+}
