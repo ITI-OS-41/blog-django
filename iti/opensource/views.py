@@ -1,10 +1,11 @@
+from django.core import paginator
 from opensource.forms import CommentForm
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse,HttpResponseRedirect
 from django.urls import reverse
 from opensource.models import Post, Category
 
-
+from django.core.paginator import Paginator
 
 
 # Create your views here.
@@ -36,7 +37,17 @@ def getPost(request, pk):
 
 def getAllPosts(request): 
     posts = Post.objects.all()
-    context = {'posts': posts}
+    p = Paginator(posts,4)
+    page_num = request.GET.get('page',1)
+    # print('p',p.num_pages)
+    # p1=p.page(1)
+    # print('dfsa')
+    # print(p1.has_next)
+    page = p.page(page_num)
+    ordering = ['-date_posted']
+    paginate_by = 5
+
+    context = {'posts': page}
     return render(request, 'opensource/posts.html', context)
 
 
