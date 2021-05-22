@@ -78,7 +78,6 @@
             <div class="card-header">Categories</div>
             <div class="list-group list-group-flush">
               {% for cat in categories %}
-
               <div
                 href="#"
                 class="
@@ -94,24 +93,29 @@
                   action="{% url 'subscribe_category' cat.pk %}"
                   method="POST"
                 >
-                  {% csrf_token %}
-
+                  {% csrf_token %} 
+                  {% if cat.is_subscribed %}
                   <button
                     type="submit"
-                    class="btn btn-primary btn-sm"
+                    class="btn btn-outline-danger btn-sm"
                     name="category_id"
                     value="{{cat.id}}"
                   >
-                    {% for c in cat.subscribers.all %} 
-                      {% if c.category.id == cat.id %}
-                        subscribe 
-                      {% else %} 
-                        Unsubscribe 
-                      {% endif %} 
-                    {% endfor %}
-                    
-                    ({{cat.total_subscribers}})
+                    Unsubscribe
+                    ({{cat.subscribers.all.count}})
                   </button>
+                  
+                  {% else %}
+                  <button
+                    type="submit"
+                    class="btn btn-outline-primary btn-sm"
+                    name="category_id"
+                    value="{{cat.id}}"
+                  >
+                    Subscribe
+                    ({{cat.subscribers.all.count}})
+                  </button>
+                  {% endif %}
                 </form>
               </div>
               {% endfor %}

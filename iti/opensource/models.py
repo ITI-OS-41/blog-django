@@ -20,13 +20,14 @@ def sub_string(str,len):
 
 class Category(models.Model):
     title = models.CharField(max_length=50, unique=True)
-    subscribers = models.ManyToManyField(User,related_name='subscribe', blank=True)  
-    
+    # subscribers = models.ManyToManyField(User,related_name='subscribe', blank=True)  
+    subscribers = models.ManyToManyField(User, through='Subscribtion')
+
     def __str__(self):
         return self.title
 
-    def total_subscribers(self):
-        return self.subscribers.count()
+    # def total_subscribers(self):
+    #     return self.subscribers.count()
 
 
 #  Post status 
@@ -100,3 +101,22 @@ class BadWord(models.Model):
 
     def __str__(self):
         return self.word 
+
+
+
+class Subscribtion(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    subscribed_on = models.DateField(auto_now= True) 
+
+    class Meta:
+        unique_together = ('user', 'category')
+
+    def __str__(self):
+        return self.user.username+' - '+self.category.title
+    
+    def cat(self):
+        return self.category.id
+    
+    def total_subscribers(self):
+        return self.category.subscribers.count()
