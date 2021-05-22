@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from opensource.models import Category, BadWord
 import json 
 
@@ -10,4 +11,9 @@ def extras (request):
         words.append(word['word'])
     words = json.dumps(words)
 
-    return {'categories': categories,'badWords': words}
+
+
+    return {
+        'categories': categories,
+        'badWords': words,
+    }

@@ -14,24 +14,7 @@
 	{% for post in posts %}
 
 	<div class="col-lg-6">
-		<!-- Blog post-->
-		<div class="card mb-4">
-			<a href="#!"
-				><img
-					height="200"
-					style="height: 200px; object-fit: cover"
-					class="card-img-top"
-					src="{% static post.get_image %}"
-					alt="{{post.title}}"
-			/></a>
-
-			<div class="card-body">
-				<div class="small text-muted">{{post.created_on}}</div>
-				<h2 class="card-title h4">{{post.title}}</h2>
-				<p class="card-text">{{ post.brief_content }}</p>
-				<a class="btn btn-primary" href="#!">Read more →</a>
-			</div>
-		</div>
+		{% include 'opensource/includes/post_card_template.html' %}
 	</div>
 	{% endfor %}
 </div>
@@ -40,7 +23,7 @@
 	<hr class="my-0" />
 	<ul class="pagination justify-content-center my-4">
 		{% if posts.has_previous %}
-    <li class="page-item">
+		<li class="page-item">
 			<a class="page-link" href="?page=1">&laquo; first</a>
 		</li>
 		<li class="page-item">
@@ -48,9 +31,8 @@
 				>Newer</a
 			>
 		</li>
-		{% endif %} 
-    {% for num in posts.paginator.page_range %} 
-    {% if posts.number == num %}
+		{% endif %} {% for num in posts.paginator.page_range %} {% if posts.number
+		== num %}
 		<li class="page-item">
 			<a class="page-link" href="?page={{ num }}">{{ num }}</a>
 		</li>
@@ -68,7 +50,7 @@
     <li class="page-item disabled"><a class="page-link" href="#!">...</a></li>
     <li class="page-item"><a class="page-link" href="#!">15</a></li> -->
 		{% if posts.has_next %}
-		
+
 		<li class="page-item">
 			<a class="page-link" href="?page={{ posts.paginator.num_pages  }}"
 				>Older</a

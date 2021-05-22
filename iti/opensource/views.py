@@ -39,13 +39,9 @@ def getAllPosts(request):
     posts = Post.objects.all()
     p = Paginator(posts,4)
     page_num = request.GET.get('page',1)
-    # print('p',p.num_pages)
-    # p1=p.page(1)
-    # print('dfsa')
-    # print(p1.has_next)
     page = p.page(page_num)
-    ordering = ['-date_posted']
-    paginate_by = 5
+    # ordering = ['-date_posted']
+    # paginate_by = 5
 
     context = {'posts': page}
     return render(request, 'opensource/posts.html', context)
@@ -90,3 +86,14 @@ def likePost(request, pk):
         post.likes.add(request.user)
     
     return HttpResponseRedirect(reverse('post',args=[str(pk)]))
+
+def subscribeCategory(request, pk): 
+    category = get_object_or_404(Category,id=request.POST.get('category_id'))
+    
+    isSubscribed = category.subscribers.filter(id=request.user.id).exists()
+    if isSubscribed:
+        category.subscribers.remove(request.user)
+    else:
+        category.subscribers.add(request.user)
+    
+    return HttpResponseRedirect(reverse('posts'))
