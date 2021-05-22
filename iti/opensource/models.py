@@ -7,7 +7,7 @@ import os
 from urllib.parse import urlparse
 
 
-from ckeditor.fields import RichTextField
+# from ckeditor.fields import RichTextField
 
 
 def cleanhtml(raw_html):
@@ -42,8 +42,8 @@ class Post(models.Model):
 
     title = models.CharField(max_length=200, unique=True)
     slug = models.SlugField(max_length=200, unique=True, blank=True)
-    # content =  models.CharField(max_length=1000)
-    content = RichTextField(blank=True, null=True)
+    content =  models.CharField(max_length=1000,null=True)
+    # content = RichTextField(blank=True, null=True)
 
     author = models.ForeignKey(User, on_delete= models.CASCADE,related_name='blog_posts')
     category = models.ForeignKey(Category, on_delete=models.PROTECT, default=1)

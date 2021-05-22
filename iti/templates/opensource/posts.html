@@ -1,64 +1,61 @@
+<!-- @format -->
+
 {% extends 'opensource/base.html' %} {% block content %} {% load static %}
 
 <!-- Page header with logo and tagline-->
 <header class="card bg-light border-bottom mb-4">
-  <div class="card-body text-center my-2">
-    <h2 class="fw-bolder text-primary">Posts</h2>
-  </div>
+	<div class="card-body text-center my-2">
+		<h2 class="fw-bolder text-primary">Posts</h2>
+	</div>
 </header>
 
 <!-- Nested row for non-featured blog posts-->
 <div class="row">
-  {% for post in posts %}
+	{% for post in posts %}
 
-  <div class="col-lg-6">
-    {% include 'opensource/includes/post_card_template.html' %}
-  </div>
-  {% endfor %}
+	<div class="col-lg-6">
+		{% include 'opensource/includes/post_card_template.html' %}
+	</div>
+	{% endfor %}
 </div>
 <!-- Pagination-->
 <nav aria-label="Pagination">
-  <hr class="my-0" />
-  <ul class="pagination justify-content-center my-4">
-    <li class="page-item disabled">
-      <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Newer</a>
-    </li>
-    <li class="page-item active" aria-current="page">
-      <a class="page-link" href="#!">1</a>
-    </li>
-    <li class="page-item"><a class="page-link" href="#!">2</a></li>
-    <li class="page-item"><a class="page-link" href="#!">3</a></li>
-    <li class="page-item disabled"><a class="page-link" href="#!">...</a></li>
-    <li class="page-item"><a class="page-link" href="#!">15</a></li>
-    <li class="page-item"><a class="page-link" href="#!">Older</a></li>
-  </ul>
-</nav>
+	<hr class="my-0" />
+	<ul class="pagination justify-content-center my-4">
+		{% if posts.has_previous %}
+		<li class="page-item">
+			<a class="page-link" href="?page=1">&laquo; first</a>
+		</li>
+		<li class="page-item">
+			<a class="page-link" href="?page=1" tabindex="-1" aria-disabled="true"
+				>Newer</a
+			>
+		</li>
+		{% endif %} {% for num in posts.paginator.page_range %} {% if posts.number
+		== num %}
+		<li class="page-item">
+			<a class="page-link" href="?page={{ num }}">{{ num }}</a>
+		</li>
+		{% elif num > posts.number|add:'-3' and num < posts.number|add:'3' %}
+		<li class="page-item">
+			<a class="page-link" href="?page={{ num }}">{{ num }}</a>
+		</li>
+		{% endif %} {% endfor %}
+		
+		{% if posts.has_next %}
 
-<!-- <table class="table table-hover text-center">
-  <thead>
-    <tr>
-      <th>First Name</th>
-      <th>Last Name</th>
-      <th>Age</th>
-      <th>Track</th>
-      <th>Graduated</th>
-      <th colspan="3">Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for post in posts %}
-    <tr>
-      <td>{{post.fname}}</td>
-      <td>{{post.lname}}</td>
-      <td>{{post.age}}</td>
-      <td>{{post.post_track}}</td>
-      <td>{{post.is_graduated}}</td>
-      <td><a href="/opensource/post/{{post.id}}">View</a></td>
-      <td><a href="/opensource/edit/{{post.id}}">Edit</a></td>
-      <td><a href="/opensource/delete/{{post.id}}">Delete</a></td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table> -->
+		<li class="page-item">
+			<a class="page-link" href="?page={{ posts.paginator.num_pages  }}"
+				>Older</a
+			>
+		</li>
+		<li class="page-item">
+			<a class="page-link" href="?page={{ posts.paginator.num_pages }}"
+				>last &raquo;</a
+			>
+		</li>
+		{% endif %}
+	</ul>
+</nav>
 
 {% endblock %}
