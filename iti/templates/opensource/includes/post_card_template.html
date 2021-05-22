@@ -2,7 +2,7 @@
 
 <!-- Blog post-->
 <div class="card mb-4">
-  <a href="#!"
+  <a href="{% url 'post' post.id %}"
     ><img
       height="200"
       style="height: 200px; object-fit: cover"
@@ -15,6 +15,6 @@
     <div class="small text-muted">{{post.created_on}}</div>
     <h2 class="card-title h4">{{post.title}}</h2>
     <p class="card-text">{{ post.brief_content }}</p>
-    <a class="btn btn-primary" href="#!">Read more →</a>
+    <a class="btn btn-primary" href="{% url 'post' post.id %}">Read more →</a>
   </div>
 </div>
