@@ -12,24 +12,7 @@
   {% for post in posts %}
 
   <div class="col-lg-6">
-    <!-- Blog post-->
-    <div class="card mb-4">
-      <a href="#!"
-        ><img
-          height="200"
-          style="height: 200px; object-fit: cover"
-          class="card-img-top"
-          src="{% static post.get_image %}"
-          alt="{{post.title}}"
-      /></a>
-
-      <div class="card-body">
-        <div class="small text-muted">{{post.created_on}}</div>
-        <h2 class="card-title h4">{{post.title}}</h2>
-        <p class="card-text">{{ post.brief_content }}</p>
-        <a class="btn btn-primary" href="#!">Read more →</a>
-      </div>
-    </div>
+    {% include 'opensource/includes/post_card_template.html' %}
   </div>
   {% endfor %}
 </div>

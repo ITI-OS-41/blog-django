@@ -20,7 +20,7 @@ def sub_string(str,len):
 
 class Category(models.Model):
     title = models.CharField(max_length=50, unique=True)
-    subscribers = models.ManyToManyField(User,related_name='subscribe')  
+    subscribers = models.ManyToManyField(User,related_name='subscribe', blank=True)  
     
     def __str__(self):
         return self.title
