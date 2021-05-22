@@ -1,13 +1,13 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const list = ["bad", "test"]
+  const list = JSON.parse(document.querySelector("#bad-words").innerText)
+
   let flattened = "\\b(" + list.join("|") + ")\\b"
 
   let regex = new RegExp(flattened, "gi")
 
-  document.body.innerHTML = document.body.innerHTML.replace(
-    regex,
-    ($0, $1, $2, $3) => {
-      return "*".repeat($1.length + 1)
-    },
-  )
+  document.getElementById("commects").innerHTML = document
+    .getElementById("commects")
+    .innerHTML.replace(regex, (originalWord, $1, $2, $3) => {
+      return originalWord[0] + "*".repeat(originalWord.length - 1)
+    })
 })

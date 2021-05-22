@@ -18,7 +18,7 @@
   <!-- Preview image figure-->
   <figure class="mb-4">
     <img
-      class="img-fluid rounded"
+      class="img-fluid rounded w-100"
       src="{% static post.get_image %}"
       alt="{{post.title}}"
     />
@@ -68,6 +68,8 @@
 <section id="commects" class="my-5">
   <div class="card bg-light">
     <div class="card-body">
+      <h5 class="mb-4">Comments</h5>
+
       <!-- Single comment-->
       {% if not post.comments.all %}
       <h4 class="text-muted text-center">Not Comments yet</h4>

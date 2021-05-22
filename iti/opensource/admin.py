@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post, Category, Comment
+from .models import BadWord, Post, Category, Comment
 
 
 def custom_titled_filter(title):
@@ -34,6 +34,7 @@ class CustomCategory(admin.ModelAdmin):
 admin.site.register(Post, CustomPost)
 admin.site.register(Category, CustomCategory)
 admin.site.register(Comment) 
+admin.site.register(BadWord) 
 
 
 
