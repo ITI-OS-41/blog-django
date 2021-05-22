@@ -20,9 +20,13 @@ def sub_string(str,len):
 
 class Category(models.Model):
     title = models.CharField(max_length=50, unique=True)
-
+    subscribers = models.ManyToManyField(User,related_name='subscribe')  
+    
     def __str__(self):
         return self.title
+
+    def total_subscribers(self):
+        return self.subscribers.count()
 
 
 #  Post status 
@@ -47,7 +51,7 @@ class Post(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     status = models.IntegerField(choices=STATUS, default=0)
 
-    likes = models.ManyToManyField(User,related_name='posts')
+    likes = models.ManyToManyField(User,related_name='posts', blank=True)
 
     def total_likes(self):
         return self.likes.count()

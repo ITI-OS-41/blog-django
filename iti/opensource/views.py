@@ -79,3 +79,14 @@ def likePost(request, pk):
         post.likes.add(request.user)
     
     return HttpResponseRedirect(reverse('post',args=[str(pk)]))
+
+def subscribeCategory(request, pk): 
+    category = get_object_or_404(Category,id=request.POST.get('category_id'))
+    
+    isSubscribed = category.subscribers.filter(id=request.user.id).exists()
+    if isSubscribed:
+        category.subscribers.remove(request.user)
+    else:
+        category.subscribers.add(request.user)
+    
+    return HttpResponseRedirect(reverse('posts'))

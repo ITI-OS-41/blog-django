@@ -73,22 +73,49 @@
               </button>
             </div>
           </form>
+          {{subscribeList}}
           <!-- Categories widget-->
           <div class="card mb-4">
             <div class="card-header">Categories</div>
-            <div class="card-body">
-              <ul class="list-unstyled mb-0">
-                {% for cat in categories %}
-                <li class="d-flex justify-content-between align-items-center">
-                  <a class="d-inline-block" href="#!">{{cat}}</a>
-                  <a href="#" class="d-inline-block btn btn-primary btn-sm"
-                    >subscribe</a
-                  ><a href="#" class="d-inline-block btn btn-danger btn-sm"
-                    >unsubscribe</a
+            <div class="list-group list-group-flush">
+              {% for cat in categories %}
+              <div
+                href="#"
+                class="
+                  list-group-item list-group-item-action
+                  d-flex
+                  justify-content-between
+                  align-items-center
+                "
+              >
+                <a href="#">{{cat}}</a>
+
+                <form
+                  action="{% url 'subscribe_category' cat.pk %}"
+                  method="POST"
+                >
+                  {% csrf_token %} {% if isSubscribed %}
+                  <button
+                    type="submit"
+                    class="btn btn-danger btn-sm"
+                    name="category_id"
+                    value="{{cat.id}}"
                   >
-                </li>
-                {% endfor %}
-              </ul>
+                    Unsubscribe ({{post.total_subscribers}})
+                  </button>
+                  {% else %}
+                  <button
+                    type="submit"
+                    class="btn btn-primary btn-sm"
+                    name="category_id"
+                    value="{{cat.id}}"
+                  >
+                    subscribe ({{cat.total_subscribers}})
+                  </button>
+                  {% endif %}
+                </form>
+              </div>
+              {% endfor %}
             </div>
           </div>
           <!-- Side widget-->

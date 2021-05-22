@@ -32,7 +32,8 @@ class CustomCategory(admin.ModelAdmin):
 
 
 admin.site.register(Post, CustomPost)
-admin.site.register(Category, CustomCategory)
+# admin.site.register(Category, CustomCategory)
+admin.site.register(Category)
 admin.site.register(Comment) 
 admin.site.register(BadWord) 
 
