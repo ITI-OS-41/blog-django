@@ -6,9 +6,11 @@ from opensource.forms import CommentForm
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse,HttpResponseRedirect
 from django.urls import reverse
-from opensource.models import Post, Category
+from opensource.models import Post, Category, User
 
 from django.core.paginator import Paginator
+
+import json 
 
 #! Email imports 
 from django.core.mail import send_mail
@@ -24,51 +26,50 @@ def getPost(request, pk):
         commentForm = CommentForm(request.POST)
         commentForm.instance.name = request.user
         commentForm.instance.post = post
-        global parent_id 
+        
+        
         if commentForm.is_valid():
             #! reply
-            parent_obj = None
-            
             try:
-                print((commentForm.instance.parent_id))
-                print("999999999999999999999")
-                parent_id = int(request.POST.get('parent_id'))
-                print(request.POST.get('parent_id'))
-                print("[[[[[[[[[[[[[[[[[[")
-                print(parent_id)
-                print("}}}}}}}}}}}}}}}}}}}}}}}}}}}")
-                # commentForm.parent=parent_id
+                parent_id = request.POST.get('parent_id')
+                parent_qs = Comment.objects.filter(id=parent_id)
+                parent_obj = parent_qs.first()
+                commentForm.instance.parent=parent_obj
 
-                # render_to_response('post.html', {'pid': parent_id})
             except Exception as e:
                 print(e)
-                parent_id = None
-                # print("parent_id --> ")
-            if parent_id:
-                parent_qs = Comment.objects.filter(id=parent_id)
-                print("====")
-                print(parent_qs)
-                print("====")
-                if parent_qs.exists() and parent_qs.count()==1:
-                    parent_obj = parent_qs.first()
-                    print(parent_obj)
-                    # new_comment = Comment.objects.get_or_create
+
             # commentForm.
-            commentForm.parent=parent_obj
             commentForm.save()
-            context = {'parent': parent_obj}
             # return HttpResponseRedirect(context)
-            return HttpResponseRedirect('/post/'+str(pk),context)
+            return HttpResponseRedirect('/post/'+str(pk))
     # ! END: Check comment form request 
 
     # ! START: Like
     isLiked = post.likes.filter(id=request.user.id).exists()
     # ! END: Like 
+
+    comments = list(post.comments.all().values())
+    filteredComments = []
+    for comment in (comments):
+        comment['user'] = User.objects.filter(id=comment['name_id']).values()[0]
+        print(comment['user'])
+        if comment['parent_id'] == None:
+            children = []
+            for c in (comments):
+                # ! is a child for this comment
+                if c['parent_id'] == comment['id']:
+                    children.append(c)
+                    print(c)
+            comment['children'] = children
+            filteredComments.append(comment)
+
+ 
     
 
 
-    context = {'commentForm': commentForm,'post': post, 'isLiked': isLiked}
-
+    context = {'commentForm': commentForm,'post': post, 'isLiked': isLiked, 'comments':filteredComments}
+ 
     return render(request, 'opensource/post.html', context)
 
 def getAllPosts(request): 
