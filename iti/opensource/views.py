@@ -1,11 +1,16 @@
+# from iti.opensource.models import Comment
+# from iti.opensource.models import Comment
+from opensource.models import Comment
 from django.core import paginator
 from opensource.forms import CommentForm
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse,HttpResponseRedirect
 from django.urls import reverse
-from opensource.models import Post, Category
+from opensource.models import Post, Category, User
 
 from django.core.paginator import Paginator
+
+import json 
 
 #! Email imports 
 from django.core.mail import send_mail
@@ -21,20 +26,50 @@ def getPost(request, pk):
         commentForm = CommentForm(request.POST)
         commentForm.instance.name = request.user
         commentForm.instance.post = post
-
+        
+        
         if commentForm.is_valid():
+            #! reply
+            try:
+                parent_id = request.POST.get('parent_id')
+                parent_qs = Comment.objects.filter(id=parent_id)
+                parent_obj = parent_qs.first()
+                commentForm.instance.parent=parent_obj
+
+            except Exception as e:
+                print(e)
+
+            # commentForm.
             commentForm.save()
+            # return HttpResponseRedirect(context)
             return HttpResponseRedirect('/post/'+str(pk))
     # ! END: Check comment form request 
 
     # ! START: Like
     isLiked = post.likes.filter(id=request.user.id).exists()
     # ! END: Like 
+
+    comments = list(post.comments.all().values())
+    filteredComments = []
+    for comment in (comments):
+        comment['user'] = User.objects.filter(id=comment['name_id']).values()[0]
+        print(comment['user'])
+        if comment['parent_id'] == None:
+            children = []
+            for c in (comments):
+                # ! is a child for this comment
+                if c['parent_id'] == comment['id']:
+                    children.append(c)
+                    print(c)
+            comment['children'] = children
+            filteredComments.append(comment)
+
+ 
     
 
 
-    context = {'commentForm': commentForm,'post': post, 'isLiked': isLiked}
-
+    context = {'commentForm': commentForm,'post': post, 'isLiked': isLiked, 'comments':filteredComments}
+ 
     return render(request, 'opensource/post.html', context)
 
 def getAllPosts(request): 

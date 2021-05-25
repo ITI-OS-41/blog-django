@@ -41,3 +41,20 @@ class CommentForm(forms.ModelForm):
                 ),
         }
     
+# class ReplyForm(forms.ModelForm):
+#     class Meta:
+#         model = Comment
+#         fields = ('body',)
+
+#         widgets = {
+#             'body': forms.Textarea(
+#                 attrs={
+#                     'class': 'form-control',
+#                     'required': 'required',
+#                     'rows': '2',
+#                     'placeholder': 'Join the discussion and leave a comment!',
+#                     },
+#                 ),
+#             'parent_id'
+#         }
+    
