@@ -7,6 +7,8 @@ from opensource.models import Post, Category
 
 from django.core.paginator import Paginator
 
+#! Email imports 
+from django.core.mail import send_mail
 
 # Create your views here.
 
@@ -93,7 +95,18 @@ def subscribeCategory(request, pk):
     isSubscribed = category.subscribers.filter(id=request.user.id).exists()
     if isSubscribed:
         category.subscribers.remove(request.user)
+        #!-- email
+       
     else:
         category.subscribers.add(request.user)
+        send_mail(
+            'subscription Notification ' , #subject
+            'you have subscribed to ' + category.title + ' Category', #msg
+            # 'omnia.soliman.m@gmail.com', #from
+            '', #from
+            [request.user.email], #to 
+            # ['omnia.soliman.m@gmail.com'], #to 
+            )
+
     
     return HttpResponseRedirect(reverse('posts'))
