@@ -85,15 +85,36 @@ class Post(models.Model):
 
 
 class Comment(models.Model):
+    # !reply
+    def all(self):
+        qs = super(Comment,self).filter(parent=None)
+        print("QS =>")
+        print(qs)
+        return qs
     post = models.ForeignKey(Post, related_name='comments', on_delete=models.CASCADE)
     name = models.ForeignKey(User, on_delete=models.CASCADE)
     body = models.TextField()
     date_added = models.DateTimeField(auto_now_add=True)
-
+    # !reply
+    parent = models.ForeignKey("self",null=True,blank=True, on_delete=models.CASCADE)
+    
+    
     def __str__(self):
-        return '%s - %s' % (self.post.title, self.name) 
+        return '%s - %s ' % (self.post.title, self.name) 
 
 
+# !reply
+    class Meta:
+        ordering = ['-date_added'] 
+    
+    def children (self):
+        
+        return Comment.objects.filter(parent=self)
+    @property
+    def is_parent (self):
+        if self.parent is not None:
+            return False
+        return True
 
 class BadWord(models.Model):
     word = models.CharField(max_length=100)

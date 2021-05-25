@@ -68,16 +68,59 @@
       <!-- Single comment-->
       {% if not post.comments.all %}
       <h4 class="text-muted text-center">Not Comments yet</h4>
-      {% else %} {% for comment in post.comments.all %}
+      {% else %} {% for comment in comments %}
 
       <div class="single-comment d-flex border p-2 bg-white mb-2">
         <div class="">
-          <div class="fw-bold">{{comment.name}}</div>
+          <div class="fw-bold">{{comment.user.username}}</div>
 
           <div class="text-muted fst-italic mb-2">{{comment.date_added}}</div>
           {{comment.body}}
         </div>
       </div>
+
+      <!-- !//////////////////////////////// -->
+      {% for child_comment in comment.children %}
+      <div
+        class="
+          single-reply
+          d-flex
+          p-2
+          bg-white
+          mb-2
+          ms-5
+          border-start border-info border-5
+        "
+      >
+        <div class="">
+          <div class="fw-bold">{{child_comment.user.username}}</div>
+
+          <div class="text-muted fst-italic mb-2">
+            {{child_comment.date_added}}
+          </div>
+          {{child_comment.body}}
+        </div>
+      </div>
+      {% endfor%}
+      <!-- ///////// -->
+      <!-- !reply -->
+      <div class="ms-5">
+        <h5 class="mt-4">Add a reply</h5>
+        <!-- Comment form-->
+        <form method="POST" id="add-comment" class="mb-4">
+          {% csrf_token %}
+          <div class="input-group mb-2">{{commentForm}}</div>
+          <div class="d-flex justify-content-end">
+            <input type="hidden" name="parent_id" value="{{comment.id}}" />
+            <!-- <input type="text" name='parent_idz' value="{{comment.parent_id}}" disabled> -->
+            <button type="submit" vlaue="reply" class="btn btn-primary">
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- ///// -->
       {% endfor%} {% endif%}
 
       <h5 class="mt-4">Add a Comment</h5>
