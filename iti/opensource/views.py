@@ -1,3 +1,6 @@
+# from iti.opensource.models import Comment
+# from iti.opensource.models import Comment
+from opensource.models import Comment
 from django.core import paginator
 from opensource.forms import CommentForm
 from django.shortcuts import get_object_or_404, render
@@ -21,10 +24,41 @@ def getPost(request, pk):
         commentForm = CommentForm(request.POST)
         commentForm.instance.name = request.user
         commentForm.instance.post = post
-
+        global parent_id 
         if commentForm.is_valid():
+            #! reply
+            parent_obj = None
+            
+            try:
+                print((commentForm.instance.parent_id))
+                print("999999999999999999999")
+                parent_id = int(request.POST.get('parent_id'))
+                print(request.POST.get('parent_id'))
+                print("[[[[[[[[[[[[[[[[[[")
+                print(parent_id)
+                print("}}}}}}}}}}}}}}}}}}}}}}}}}}}")
+                # commentForm.parent=parent_id
+
+                # render_to_response('post.html', {'pid': parent_id})
+            except Exception as e:
+                print(e)
+                parent_id = None
+                # print("parent_id --> ")
+            if parent_id:
+                parent_qs = Comment.objects.filter(id=parent_id)
+                print("====")
+                print(parent_qs)
+                print("====")
+                if parent_qs.exists() and parent_qs.count()==1:
+                    parent_obj = parent_qs.first()
+                    print(parent_obj)
+                    # new_comment = Comment.objects.get_or_create
+            # commentForm.
+            commentForm.parent=parent_obj
             commentForm.save()
-            return HttpResponseRedirect('/post/'+str(pk))
+            context = {'parent': parent_obj}
+            # return HttpResponseRedirect(context)
+            return HttpResponseRedirect('/post/'+str(pk),context)
     # ! END: Check comment form request 
 
     # ! START: Like
