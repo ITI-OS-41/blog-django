@@ -6,7 +6,7 @@ from opensource.forms import CommentForm
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse,HttpResponseRedirect
 from django.urls import reverse
-from opensource.models import Post, Category, User
+from opensource.models import Post, Category, User,Subscribtion
 
 from django.core.paginator import Paginator
 from taggit.models import Tag
@@ -74,7 +74,14 @@ def getPost(request, pk):
     return render(request, 'opensource/post.html', context)
 
 def getAllPosts(request): 
-    posts = Post.objects.all()
+    if request.user.id:
+        subscribtions = Subscribtion.objects.filter(user=request.user.id).values_list('category_id', flat=True)
+
+        posts = Post.objects.filter(category_id__in=subscribtions)
+    else:
+        posts = Post.objects.all()
+
+
     common_tags = Post.tags.most_common()[:4]
     p = Paginator(posts,4)
     page_num = request.GET.get('page',1)
