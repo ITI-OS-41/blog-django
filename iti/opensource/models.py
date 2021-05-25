@@ -5,7 +5,7 @@ import re
 import os
 
 from urllib.parse import urlparse
-
+from taggit.managers import TaggableManager
 
 # from ckeditor.fields import RichTextField
 
@@ -47,7 +47,7 @@ class Post(models.Model):
 
     author = models.ForeignKey(User, on_delete= models.CASCADE,related_name='blog_posts')
     category = models.ForeignKey(Category, on_delete=models.PROTECT, default=1)
-    # tags = TaggableManager()
+    tags = TaggableManager()
     updated_on = models.DateTimeField(auto_now= True)
     created_on = models.DateTimeField(auto_now_add=True)
     status = models.IntegerField(choices=STATUS, default=0)

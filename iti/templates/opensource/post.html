@@ -29,15 +29,10 @@
   <!-- Post tags-->
   <div class="my-4">
     Tags:
-    <a class="badge bg-secondary text-decoration-none" href="#!"
-      >{{post.category}}</a
-    >
-    <a class="badge bg-secondary text-decoration-none" href="#!"
-      >{{post.category}}</a
-    >
-    <a class="badge bg-secondary text-decoration-none" href="#!"
-      >{{post.category}}</a
-    >
+    {% for tag in post.tags.all %}
+    <a class="badge bg-secondary text-decoration-none" href="#">{{tag}}</a>
+    {% endfor %}
+    
   </div>
 </article>
 

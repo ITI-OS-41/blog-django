@@ -6,7 +6,7 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         
-        fields = ( 'title', 'content', 'category', )
+        fields = ( 'title', 'content', 'category','tags' )
         # # fields = '__all__'
         # widgets = {
         #     'fname': forms.TextInput(attrs={'class': 'form-control'}),

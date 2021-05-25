@@ -6,6 +6,7 @@ from django.urls import reverse
 from opensource.models import Post, Category
 
 from django.core.paginator import Paginator
+from taggit.models import Tag
 
 
 # Create your views here.
@@ -37,24 +38,33 @@ def getPost(request, pk):
 
 def getAllPosts(request): 
     posts = Post.objects.all()
+    common_tags = Post.tags.most_common()[:4]
     p = Paginator(posts,4)
     page_num = request.GET.get('page',1)
     page = p.page(page_num)
     # ordering = ['-date_posted']
     # paginate_by = 5
 
-    context = {'posts': page}
+    context = {'posts': page,'common_tags':common_tags}
     return render(request, 'opensource/posts.html', context)
 
 
 def newPost(request): 
     postForm = PostForm()
+    common_tags = Post.tags.most_common()[:4]
     if request.method == 'POST':
         postForm = PostForm(request.POST)
         if postForm.is_valid():
-            postForm.save()
+            # 
+            obj = form.save(commit=False)
+            obj.user = request.user
+            obj.save()
+            # postForm.save()
+            # to save tags
+            postForm.save_m2m()
+
             return HttpResponseRedirect('/opensource/all')
-    context = {'postForm': postForm}
+    context = {'postForm': postForm,'common_tags':common_tags}
     return render(request, 'opensource/newPost.html', context)
 
 
@@ -97,3 +107,15 @@ def subscribeCategory(request, pk):
         category.subscribers.add(request.user)
     
     return HttpResponseRedirect(reverse('posts'))
+
+# filter tags
+def tagged(request, slug):
+    tag = get_object_or_404(Tag, slug=slug)
+    common_tags = Post.tags.most_common()[:4]
+    posts = Post.objects.filter(tags=tag)
+    context = {
+        'tag':tag,
+        'common_tags':common_tags,
+        'posts':posts,
+    }
+    return render(request, 'opensource/posts.html', context)
