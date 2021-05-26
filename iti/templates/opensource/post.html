@@ -11,7 +11,9 @@
       Posted on {{post.created_on}} by {{post.author}}
     </div>
     <!-- Post categories-->
-    <a class="badge bg-info text-decoration-none" href="#!"
+    <a
+      class="badge bg-info text-decoration-none"
+      href="{% url 'category' post.category.id %}"
       >{{post.category}}</a
     >
   </header>
