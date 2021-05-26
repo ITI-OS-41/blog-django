@@ -13,7 +13,8 @@ def custom_titled_filter(title):
 
 class CustomPost(admin.ModelAdmin):
     fieldsets = (
-        ['Post Information', {'fields': ['image','title','slug','author','content','status','likes','tags']}],
+
+        ['Post Information', {'fields': ['image','title','slug','author','content','status','likes']}],
         ['Category Information', {'fields': ['category']}]
     )
     list_display = ('title', 'category', 'author', 'is_published')
@@ -37,8 +38,3 @@ admin.site.register(Category)
 admin.site.register(Comment) 
 admin.site.register(BadWord) 
 admin.site.register(Subscribtion)  
-
-
-
-
-

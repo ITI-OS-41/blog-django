@@ -1,12 +1,9 @@
-# from iti.opensource.models import Comment
-# from iti.opensource.models import Comment
-from opensource.models import Comment
 from django.core import paginator
-from opensource.forms import CommentForm
+from opensource.forms import CommentForm,PostForm
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse,HttpResponseRedirect
 from django.urls import reverse
-from opensource.models import Post, Category, User,Subscribtion
+from opensource.models import Post, Category, User, Subscribtion, Comment
 
 from django.core.paginator import Paginator
 from taggit.models import Tag
@@ -15,6 +12,7 @@ import json
 
 #! Email imports 
 from django.core.mail import send_mail
+
 
 # Create your views here.
 
@@ -26,8 +24,7 @@ def getPost(request, pk):
     if request.method == 'POST':
         commentForm = CommentForm(request.POST)
         commentForm.instance.name = request.user
-        commentForm.instance.post = post
-        
+        commentForm.instance.post = post        
         
         if commentForm.is_valid():
             #! reply
@@ -49,7 +46,7 @@ def getPost(request, pk):
     # ! START: Like
     isLiked = post.likes.filter(id=request.user.id).exists()
     # ! END: Like 
-
+    
     comments = list(post.comments.all().values())
     filteredComments = []
     for comment in (comments):
@@ -65,10 +62,6 @@ def getPost(request, pk):
             comment['children'] = children
             filteredComments.append(comment)
 
- 
-    
-
-
     context = {'commentForm': commentForm,'post': post, 'isLiked': isLiked, 'comments':filteredComments}
  
     return render(request, 'opensource/post.html', context)
@@ -81,26 +74,22 @@ def getAllPosts(request):
     else:
         posts = Post.objects.all()
 
-
-    common_tags = Post.tags.most_common()[:4]
     p = Paginator(posts,4)
     page_num = request.GET.get('page',1)
     page = p.page(page_num)
     # ordering = ['-date_posted']
     # paginate_by = 5
 
-    context = {'posts': page,'common_tags':common_tags}
+    context = {'posts': page}
     return render(request, 'opensource/posts.html', context)
-
 
 def newPost(request): 
     postForm = PostForm()
-    common_tags = Post.tags.most_common()[:4]
     if request.method == 'POST':
         postForm = PostForm(request.POST)
         if postForm.is_valid():
             # 
-            obj = form.save(commit=False)
+            obj = postForm.save(commit=False)
             obj.user = request.user
             obj.save()
             # postForm.save()
@@ -108,7 +97,15 @@ def newPost(request):
             postForm.save_m2m()
 
             return HttpResponseRedirect('/opensource/all')
-    context = {'postForm': postForm,'common_tags':common_tags}
+    context = {'postForm': postForm}
+
+    if request.method == 'POST':
+        postForm = PostForm(request.POST)
+        if postForm.is_valid():
+            postForm.save()
+            return HttpResponseRedirect('/opensource/all')
+    context = {'postForm': postForm}
+
     return render(request, 'opensource/newPost.html', context)
 
 
@@ -141,6 +138,7 @@ def likePost(request, pk):
     
     return HttpResponseRedirect(reverse('post',args=[str(pk)]))
 
+
 def subscribeCategory(request, pk): 
     category = get_object_or_404(Category,id=request.POST.get('category_id'))
     
@@ -159,18 +157,23 @@ def subscribeCategory(request, pk):
             [request.user.email], #to 
             # ['omnia.soliman.m@gmail.com'], #to 
             )
-
-    
     return HttpResponseRedirect(reverse('posts'))
 
 # filter tags
 def tagged(request, slug):
     tag = get_object_or_404(Tag, slug=slug)
-    common_tags = Post.tags.most_common()[:4]
     posts = Post.objects.filter(tags=tag)
     context = {
         'tag':tag,
-        'common_tags':common_tags,
+        'posts':posts,
+    }
+    return render(request, 'opensource/posts.html', context)
+# filter categories
+def category(request, pk):
+    category = get_object_or_404(Category, id=pk)
+    posts = Post.objects.filter(category=category)
+    context = {
+        'category':category,
         'posts':posts,
     }
     return render(request, 'opensource/posts.html', context)

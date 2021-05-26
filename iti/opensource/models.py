@@ -7,9 +7,6 @@ import os
 from urllib.parse import urlparse
 from taggit.managers import TaggableManager
 
-# from ckeditor.fields import RichTextField
-
-
 def cleanhtml(raw_html):
     cleanr = re.compile('<.*?>')
     cleantext = re.sub(cleanr, '', raw_html)
@@ -48,6 +45,7 @@ class Post(models.Model):
     author = models.ForeignKey(User, on_delete= models.CASCADE,related_name='blog_posts')
     category = models.ForeignKey(Category, on_delete=models.PROTECT, default=1)
     tags = TaggableManager()
+
     updated_on = models.DateTimeField(auto_now= True)
     created_on = models.DateTimeField(auto_now_add=True)
     status = models.IntegerField(choices=STATUS, default=0)
@@ -85,16 +83,15 @@ class Post(models.Model):
 
 
 class Comment(models.Model):
-    # !reply
     def all(self):
         qs = super(Comment,self).filter(parent=None)
-        print("QS =>")
-        print(qs)
         return qs
+
     post = models.ForeignKey(Post, related_name='comments', on_delete=models.CASCADE)
     name = models.ForeignKey(User, on_delete=models.CASCADE)
     body = models.TextField()
     date_added = models.DateTimeField(auto_now_add=True)
+
     # !reply
     parent = models.ForeignKey("self",null=True,blank=True, on_delete=models.CASCADE)
     
@@ -102,8 +99,6 @@ class Comment(models.Model):
     def __str__(self):
         return '%s - %s ' % (self.post.title, self.name) 
 
-
-# !reply
     class Meta:
         ordering = ['-date_added'] 
     
@@ -115,6 +110,8 @@ class Comment(models.Model):
         if self.parent is not None:
             return False
         return True
+
+
 
 class BadWord(models.Model):
     word = models.CharField(max_length=100)

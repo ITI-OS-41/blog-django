@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'opensource',
+    'members',
     'bootstrap_admin', # always before django.contrib.admin
 
     'django.contrib.admin',
@@ -41,7 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # 'ckeditor',
-    'taggit'
+    'taggit',
 ]
 
 MIDDLEWARE = [
@@ -153,3 +154,6 @@ EMAIL_USE_TLS= True
 
 
 #python -m smtpd -n -c DebuggingServer localhost:1025
+
+LOGIN_REDIRECT_URL = 'posts'
+LOGOUT_REDIRECT_URL = 'posts'
