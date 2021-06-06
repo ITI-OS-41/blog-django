@@ -179,3 +179,9 @@ def category(request, pk):
         'pageHeader': "Posts for category: "+category.title
     }
     return render(request, 'opensource/posts.html', context)
+
+    
+
+def error_404(request,exception):
+    return render(request, 'opensource/404.html')
+
