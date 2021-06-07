@@ -1,0 +1,17 @@
+{%extends 'opensource/base.html' %}
+
+{%block content%}
+    <center>
+        {% if searched %}
+        <h1>Results for {{searched}}  </h1>
+		<br/>
+		{% for post in posts %}
+			<a href="{% url 'post' post.id %}">{{post}} </a>
+			<br/>
+		{%endfor%}
+		{% else %}
+		<h1> you forget </h1>
+        {% endif %}
+    </center>
+ 
+    {%endblock%}

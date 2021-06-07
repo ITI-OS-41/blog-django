@@ -177,3 +177,16 @@ def category(request, pk):
         'posts':posts,
     }
     return render(request, 'opensource/posts.html', context)
+
+# ! Search 
+def search(request):
+        # search.html,  searched -> da el name bta3 el input
+    if request.method == 'POST':
+        searched = request.POST['searched']
+        posts = Post.objects.filter(title__contains=searched)
+        return render(request, 'opensource/search.html',
+        {'searched':searched,
+        'posts':posts}) # -> we will pass it back to the page itself 
+
+    else:
+        return render(request, 'opensource/search.html',{})

@@ -89,14 +89,16 @@ WSGI_APPLICATION = 'iti.wsgi.application'
 DATABASES = {
     'default': {
     'ENGINE': 'django.db.backends.mysql',
-    'NAME': 'iti-django',  
+    # 'NAME': 'iti-django',  
+    'NAME': 'iti-blog-django',  
     'HOST': 'localhost',
-    'PORT': '3306',
+    'PORT': '3308',
     'USER': 'root',
     'PASSWORD': '',
     }   
 }
 
+    # 'NAME': 'iti-blog-django',  
 
 
 # Password validation
