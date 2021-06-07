@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-b$%njxp6*gv$qmtwze%9@e6+ddk9mtq#7gbu%1#9v^)rg=u9o#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -34,6 +34,10 @@ INSTALLED_APPS = [
     'opensource',
     'members',
     'bootstrap_admin', # always before django.contrib.admin
+     # General use templates & template tags (should appear first)
+    # 'adminlte3',
+     # Optional: Django admin theme (must be before django.contrib.admin)
+    # 'adminlte3_theme',
 
     'django.contrib.admin',
     'django.contrib.auth',

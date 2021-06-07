@@ -80,7 +80,7 @@ def getAllPosts(request):
     # ordering = ['-date_posted']
     # paginate_by = 5
 
-    context = {'posts': page}
+    context = {'posts': page, 'pageHeader': "All Posts"}
     return render(request, 'opensource/posts.html', context)
 
 def newPost(request): 
@@ -166,6 +166,7 @@ def tagged(request, slug):
     context = {
         'tag':tag,
         'posts':posts,
+        'pageHeader': "Posts for tag: "+tag.name
     }
     return render(request, 'opensource/posts.html', context)
 # filter categories
@@ -174,7 +175,8 @@ def category(request, pk):
     posts = Post.objects.filter(category=category)
     context = {
         'category':category,
-        'posts':posts,
+        'posts':posts, 
+        'pageHeader': "Posts for category: "+category.title
     }
     return render(request, 'opensource/posts.html', context)
 
@@ -190,3 +192,8 @@ def search(request):
 
     else:
         return render(request, 'opensource/search.html',{})
+    
+
+def error_404(request,exception):
+    return render(request, 'opensource/404.html')
+

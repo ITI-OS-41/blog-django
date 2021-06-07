@@ -21,3 +21,4 @@ urlpatterns = [
     path('members/', include('django.contrib.auth.urls')),
     path('members/', include('members.urls')),
 ]
+handler404 = 'opensource.views.error_404'
