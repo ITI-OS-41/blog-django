@@ -8,13 +8,13 @@ def custom_titled_filter(title):
             instance = admin.FieldListFilter.create(*args, **kwargs)
             instance.title = title
             return instance
-    return Wrapper
+    return Wrapper 
 
 
 class CustomPost(admin.ModelAdmin):
     fieldsets = (
 
-        ['Post Information', {'fields': ['image','title','slug','author','content','status','likes']}],
+        ['Post Information', {'fields': ['image','title','slug','author','content','status','likes', 'tags']}],
         ['Category Information', {'fields': ['category']}]
     )
     list_display = ('title', 'category', 'author', 'is_published')
@@ -30,7 +30,7 @@ class InlinePost(admin.StackedInline):
 class CustomCategory(admin.ModelAdmin):
     inlines = [InlinePost]
 
-
+ 
 
 admin.site.register(Post, CustomPost)
 # admin.site.register(Category, CustomCategory)

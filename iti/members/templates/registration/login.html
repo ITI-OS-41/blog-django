@@ -1,9 +1,10 @@
 {% extends 'opensource/base.html' %} {% load static %} {% block title_block %}
-Login{% endblock %} {% block content %}
+Login{% endblock %} {% block content %} {% load crispy_forms_tags %}
 <h2 class="mb-4">Login</h2>
+
 <form method="POST">
-  {% csrf_token %}
-  <div class="mb-3">
+  {% csrf_token %} {{ form|crispy }}
+  <!-- <div class="mb-3">
     <input
       type="text"
       placeholder="Username"
@@ -18,9 +19,9 @@ Login{% endblock %} {% block content %}
       class="form-control"
       name="password"
     />
-  </div>
+  </div> -->
 
-  <button class="btn btn-success" type="submit">Login</button>
+  <button class="btn btn-success mt-4" type="submit">Login</button>
   <div class="mt-4">
     Not A User? Register <a href="{% url 'register' %}">Here...</a>
   </div>

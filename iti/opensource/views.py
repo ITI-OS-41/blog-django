@@ -153,7 +153,7 @@ def subscribeCategory(request, pk):
             'subscription Notification ' , #subject
             'you have subscribed to ' + category.title + ' Category', #msg
             # 'omnia.soliman.m@gmail.com', #from
-            '', #from
+            'iti.blog.41@gmail.com', #from
             [request.user.email], #to 
             # ['omnia.soliman.m@gmail.com'], #to 
             )
@@ -186,12 +186,14 @@ def search(request):
     if request.method == 'POST':
         searched = request.POST['searched']
         posts = Post.objects.filter(title__contains=searched)
-        return render(request, 'opensource/search.html',
-        {'searched':searched,
-        'posts':posts}) # -> we will pass it back to the page itself 
 
+        context = {
+            'posts':posts, 
+            'pageHeader': "Search results for: "+searched,
+        }
+        return render(request, 'opensource/posts.html',context) 
     else:
-        return render(request, 'opensource/search.html',{})
+        return render(request, 'opensource/posts.html',{})
     
 
 def error_404(request,exception):

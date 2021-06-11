@@ -1,28 +1,29 @@
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
+from django.contrib.auth import login, authenticate
 from django import forms
 
 class SignUpForm(UserCreationForm): 
-    email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'form-control'}))
-    first_name = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'class': 'form-control'}))
-    last_name = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    email = forms.EmailField()
+    first_name = forms.CharField(max_length=20)
+    last_name = forms.CharField(max_length=20)
 
     class Meta:
         model = User
         fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2')
 
 
-    def __init__(self, *args, **kwargs):
-        super(SignUpForm, self).__init__(*args, **kwargs) 
+    # def __init__(self, *args, **kwargs):
+    #     super(SignUpForm, self).__init__(*args, **kwargs) 
 
-        self.fields['username'].widget.attrs['class'] = 'form-control'
-        self.fields['password1'].widget.attrs['class'] = 'form-control'
-        self.fields['password2'].widget.attrs['class'] = 'form-control'
-
-
+    #     self.fields['username'].widget.attrs['class'] = 'form-control'
+    #     self.fields['password1'].widget.attrs['class'] = 'form-control'
+    #     self.fields['password2'].widget.attrs['class'] = 'form-control'
 
 
-class MyAuthForm(AuthenticationForm):
+
+
+class AuthFormCheckStatus(AuthenticationForm):
    error_messages = {
        'invalid_login': (
            "Please enter a correct %(username)s and password."
@@ -47,5 +48,3 @@ class MyAuthForm(AuthenticationForm):
            code='invalid_login',
            params={'username': self.username_field.verbose_name},
        )
-   
-  

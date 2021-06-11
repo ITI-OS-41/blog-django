@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     # 'adminlte3',
      # Optional: Django admin theme (must be before django.contrib.admin)
     # 'adminlte3_theme',
+    'crispy_forms',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -93,10 +94,10 @@ WSGI_APPLICATION = 'iti.wsgi.application'
 DATABASES = {
     'default': {
     'ENGINE': 'django.db.backends.mysql',
-    # 'NAME': 'iti-django',  
-    'NAME': 'iti-blog-django',  
+    'NAME': 'iti-django',  
+    # 'NAME': 'iti-blog-django',  
     'HOST': 'localhost',
-    'PORT': '3308',
+    'PORT': '3306',
     'USER': 'root',
     'PASSWORD': '',
     }   
@@ -150,16 +151,23 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-#! emil
+#! email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = '587'
+# EMAIL_HOST_USER =  'iti.django@yahoo.com'
+# EMAIL_HOST_PASSWORD = '123Admin123' 
+
 EMAIL_HOST_USER =  'iti.blog.41@gmail.com'
 EMAIL_HOST_PASSWORD = 'ITIblog41'
+# EMAIL_HOST_PASSWORD = 'uxxdyabazbazzupu'
 EMAIL_USE_TLS= True
-# EMAIL_USE_SSL= False
-
+EMAIL_USE_SSL= False
 
 #python -m smtpd -n -c DebuggingServer localhost:1025
 
 LOGIN_REDIRECT_URL = 'posts'
 LOGOUT_REDIRECT_URL = 'posts'
+
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

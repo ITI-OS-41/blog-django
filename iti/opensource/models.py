@@ -44,7 +44,7 @@ class Post(models.Model):
 
     author = models.ForeignKey(User, on_delete= models.CASCADE,related_name='blog_posts')
     category = models.ForeignKey(Category, on_delete=models.PROTECT, default=1)
-    tags = TaggableManager()
+    tags = TaggableManager(blank=True)
 
     updated_on = models.DateTimeField(auto_now= True)
     created_on = models.DateTimeField(auto_now_add=True)
