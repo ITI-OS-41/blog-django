@@ -17,3 +17,4 @@ sqlparse==0.4.1
 virtualenv==20.4.6
 django-taggit==1.4.0
 django-adminlte-3==0.1.6
+django-crispy-forms==1.12.0
